@@ -28,7 +28,7 @@ public class PSOTrader {
 	trader.setUp();
 	double trainingprofit = trader.startTraining(trainingtime);
 	
-	while(trainingprofit < 0) { //keep restarting until a succesful swarm is found
+	while(trainingprofit < 0.3) { //keep restarting until a succesful swarm is found
 		trader.setUp();
 		trainingprofit = trader.startTraining(trainingtime);
 		System.out.println(trainingprofit);
@@ -89,7 +89,7 @@ public class PSOTrader {
 		net.createNetwork();
 		this.swarm = new TraderParticleSwarm(100, 6, net, series);
 		swarm.initialiseWindow();
-		swarm.setParameters(0.7,2.05,2.05);
+		swarm.setParameters(0.7289,2.05,2.05);
 		swarm.createSwarm();
 		
 	}

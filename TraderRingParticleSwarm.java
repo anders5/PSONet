@@ -19,7 +19,7 @@ public class TraderRingParticleSwarm extends TraderParticleSwarm {
 			List<Double> position = new ArrayList<Double>();
 			List<Double> velocity = new ArrayList<Double>();
 			for(int j = 0; j < dimensions; j++) {
-				Double p = (rand.nextDouble() * 10.0) - 5.0;
+				Double p = (rand.nextDouble() * 20.0) - 10.0;
 				position.add(p);
 				double v = (rand.nextDouble() * 8.0) - 4.0;
 				velocity.add(v);

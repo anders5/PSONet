@@ -20,7 +20,7 @@ public class RingParticleSwarm extends ParticleSwarm {
 			List<Double> position = new ArrayList<Double>();
 			List<Double> velocity = new ArrayList<Double>();
 			for(int j = 0; j < dimensions; j++) {
-				Double p = (rand.nextDouble() * 2.0) - 1.0;
+				Double p = (rand.nextDouble() * 20.0) - 10.0;
 				position.add(p);
 				double v = (rand.nextDouble() * 8.0) - 4.0;
 				velocity.add(v);
@@ -52,12 +52,12 @@ public class RingParticleSwarm extends ParticleSwarm {
 			List<Double> newvelocity = new ArrayList<Double>();
 			for(int i = 0; i < p.position.size(); i++) {
 				updateLocalBest(p);
-				double newv = (vw * p.velocity.get(i)) + (vp * rp * (p.pbest.get(i) - p.position.get(i)) ) + (vg * rg * (p.localbest.get(i) - p.position.get(i))); //particle velocity update rule
+				double newv = vw * (1.0 * p.velocity.get(i)) + (vp * rp * (p.pbest.get(i) - p.position.get(i)) ) + (vg * rg * (p.localbest.get(i) - p.position.get(i))); //particle velocity update rule
 
 				//double newv = ((rand.nextDouble() * 2.0 - 1.0) * 0.5) +  (vw * p.velocity.get(i)) + (vp * rp * (p.pbest.get(i) - p.position.get(i)) ) + (vg * rg * (gbest.get(i) - p.position.get(i))); //particle velocity update rule
 				//double newv = 0.73 *  (vw * p.velocity.get(i)) + (vp * rp * (p.pbest.get(i) - p.position.get(i)) ) + (vg * rg * (gbest.get(i) - p.position.get(i))); //particle velocity update rule
-				if(newv < -vmax) {newv = -(vmax);};
-				if(newv > vmax) {newv = vmax;};
+				//if(newv < -vmax) {newv = -(vmax);};
+				//if(newv > vmax) {newv = vmax;};
 				newvelocity.add(newv);
 			}
 			p.updateVelocity(newvelocity);

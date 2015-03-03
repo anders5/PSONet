@@ -86,8 +86,8 @@ public class NeuralNetwork {
 		for(int i = 0; i < netlayers.size(); i++) { //iterate through each layer in the net
 			for(int j = 0; j < netlayers.get(i).numneurons; j++) { //iterate through each neuron in the current layer
 				for(int k = 0; k < netlayers.get(i).layerneurons.get(j).weights.size(); k++) { //iterate through and change each weight for the current neuron
-					netlayers.get(i).layerneurons.get(j).weights.remove(k);
-					netlayers.get(i).layerneurons.get(j).weights.add(k,newweights.get(weightcounter));
+					//netlayers.get(i).layerneurons.get(j).weights.remove(k);
+					netlayers.get(i).layerneurons.get(j).weights.set(k,newweights.get(weightcounter));
 					weightcounter++;
 				}
 			}
@@ -116,11 +116,11 @@ public class NeuralNetwork {
 				double weightedsuminput = 0;
 				for(int k=0; k < netlayers.get(i).layerneurons.get(j).numinputs+1; k++) { //for every input k to neuron j in layer i
 					if(k == 0) { //add bias to weighted sum
-						weightedsuminput += -1 * netlayers.get(i).layerneurons.get(j).weights.get(k);
+						weightedsuminput = (1 * netlayers.get(i).layerneurons.get(j).weights.get(k)) + weightedsuminput;
 						
 					}
 					else {
-					weightedsuminput += netlayers.get(i).layerneurons.get(j).weights.get(k) * inputs.get(weightnumber);
+					weightedsuminput = (netlayers.get(i).layerneurons.get(j).weights.get(k) * inputs.get(weightnumber)) + weightedsuminput;
 					weightnumber++;
 				}}
 				
@@ -135,9 +135,9 @@ public class NeuralNetwork {
 	 
 	
 	private Double activateNeuron(double weightedsuminput) {
-		//return (1/(1 + Math.pow(Math.E,(-1*weightedsuminput)))); //sigmoid activation function
+		return (1/(1 + Math.pow(Math.E,(-1*weightedsuminput)))); //sigmoid activation function
 		//System.out.println(weightedsuminput);
-		return Math.tanh(weightedsuminput);
+		//return Math.tanh(weightedsuminput);
 	}
 
 

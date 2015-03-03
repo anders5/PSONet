@@ -46,7 +46,7 @@ public class NetTrainer {
 				runningtotal += Math.pow((expectedoutputs.get(i).get(j) - observedoutputs.get(i).get(j)),2);
 			}
 		}
-		return ((1/(numpatterns*numoutputnodes)) * runningtotal);
+		return Math.sqrt(((1/(numpatterns*numoutputnodes)) * runningtotal));
 	}
 
 }

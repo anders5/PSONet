@@ -3,7 +3,7 @@ import java.util.List;
 import java.util.Random;
 
 
-//TODO: remove limit on position (allow negative position values), set maximum velocity. change swarm initialisation - all particles start on same point?
+
 
 public class ParticleSwarm {
 	
@@ -52,7 +52,16 @@ public class ParticleSwarm {
 			List<Double> position = new ArrayList<Double>();
 			List<Double> velocity = new ArrayList<Double>();
 			for(int j = 0; j < dimensions; j++) {
-				Double p = (rand.nextDouble() * 2.0) - 1.0;
+//				if(rand.nextDouble() > 0.5) {
+//					Double p = (rand.nextDouble() * 5.0) + 5.0;
+//					position.add(p);
+//				}
+//				else {
+//					Double p = (rand.nextDouble() * -5.0) -5.0;
+//					position.add(p);
+//				}
+				
+				Double p = (rand.nextDouble() * 20.0) - 10.0;
 				position.add(p);
 				double v = (rand.nextDouble() * 8.0) - 4.0;
 				velocity.add(v);
@@ -96,8 +105,8 @@ public class ParticleSwarm {
 		void updatePosition() {
 			for(int i = 0; i < position.size(); i++) {
 				Double newposition = position.get(i) + velocity.get(i);
-				position.remove(i);
-				position.add(i,newposition);
+				//position.remove(i);
+				position.set(i,newposition);
 			}
 		}
 		
@@ -110,12 +119,12 @@ public class ParticleSwarm {
 			double rg = rand.nextDouble();
 			List<Double> newvelocity = new ArrayList<Double>();
 			for(int i = 0; i < p.position.size(); i++) {
-				double newv = (vw * p.velocity.get(i)) + (vp * rp * (p.pbest.get(i) - p.position.get(i)) ) + (vg * rg * (gbest.get(i) - p.position.get(i))); //particle velocity update rule
+				//double newv = (vw * p.velocity.get(i)) + (vp * rp * (p.pbest.get(i) - p.position.get(i)) ) + (vg * rg * (gbest.get(i) - p.position.get(i))); //particle velocity update rule
 
 				//double newv = ((rand.nextDouble() * 2.0 - 1.0) * 0.5) +  (vw * p.velocity.get(i)) + (vp * rp * (p.pbest.get(i) - p.position.get(i)) ) + (vg * rg * (gbest.get(i) - p.position.get(i))); //particle velocity update rule
-				//double newv = 0.73 *  (vw * p.velocity.get(i)) + (vp * rp * (p.pbest.get(i) - p.position.get(i)) ) + (vg * rg * (gbest.get(i) - p.position.get(i))); //particle velocity update rule
-				if(newv < -vmax) {newv = -(vmax);};
-				if(newv > vmax) {newv = vmax;};
+				double newv = 0.7289 *  (p.velocity.get(i) + (vp * rp * (p.pbest.get(i) - p.position.get(i)) ) + (vg * rg * (gbest.get(i) - p.position.get(i)))); //particle velocity update rule
+				//if(newv < -vmax) {newv = -(vmax);};
+				//if(newv > vmax) {newv = vmax;};
 				newvelocity.add(newv);
 			}
 			p.updateVelocity(newvelocity);
