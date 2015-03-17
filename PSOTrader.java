@@ -28,15 +28,15 @@ public class PSOTrader {
 	trader.setUp();
 	double trainingprofit = trader.startTraining(trainingtime);
 	
-	while(trainingprofit < 0.3) { //keep restarting until a succesful swarm is found
+	while(trainingprofit < 1.0) { //keep restarting until a succesful swarm is found
 		trader.setUp();
 		trainingprofit = trader.startTraining(trainingtime);
-		System.out.println(trainingprofit);
+		System.out.println(trader.trainingToPercent(trainingprofit));
 		
 	}
 	
 	double testprofit = trader.startTrading(9995);
-	System.out.println(testprofit);
+	System.out.println(trader.testToPercent(testprofit));
 	
 
 	
@@ -75,19 +75,26 @@ public class PSOTrader {
 	
 	//System.out.println(profitlist);
 	
+	private String testToPercent(double profit) {
+		double percent = (profit / series.get(2000)) * 100;
+		return percent + "%";
+	}
 	
-	
+	private String trainingToPercent(double profit) {
+		double percent = (profit / series.get(0)) * 100;
+		return percent + "%";
+	}
 	
 	
 	
 	
 	private void setUp() throws IOException {
 		trainingprofit = 0;
-		series = DataParser.parseMoodySeries("C:\\workspace\\PSONet\\moodydata\\n3.txt");
+		series = DataParser.parseMoodySeries("C:\\workspace\\PSONet\\moodydata\\n1.txt");
 		netlayers = new ArrayList<Integer>() {{ add(1);}};
 		net = new NeuralNetwork(5,1,netlayers);
 		net.createNetwork();
-		this.swarm = new TraderParticleSwarm(100, 6, net, series);
+		this.swarm = new TraderParticleSwarm(300, 6, net, series);
 		swarm.initialiseWindow();
 		swarm.setParameters(0.7289,2.05,2.05);
 		swarm.createSwarm();
@@ -102,6 +109,7 @@ public class PSOTrader {
 			
 			swarm.moveWindow();
 			double currentaction = swarm.moveTraderSwarm(net).tradingaction;
+			//System.out.println(currentaction);
 			trainingprofit = trainingprofit + swarm.calculateReturn(currentaction, previousaction);
 			previousaction = currentaction;
 			t++;

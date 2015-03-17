@@ -20,7 +20,7 @@ public class RingParticleSwarm extends ParticleSwarm {
 			List<Double> position = new ArrayList<Double>();
 			List<Double> velocity = new ArrayList<Double>();
 			for(int j = 0; j < dimensions; j++) {
-				Double p = (rand.nextDouble() * 20.0) - 10.0;
+				Double p = (rand.nextDouble() * 0.2) - 0.1;
 				position.add(p);
 				double v = (rand.nextDouble() * 8.0) - 4.0;
 				velocity.add(v);
@@ -29,13 +29,13 @@ public class RingParticleSwarm extends ParticleSwarm {
 			RingParticle p = new RingParticle(position, velocity);
 			swarm.add(p);
 			if(i == 0) {
-				gbest = position;
+				gbest =  new ArrayList<Double>(position);
 				
 				gbesterror = trainer.testWeights(position);
 			}
 			else {
 				if(trainer.testWeights(position) < gbesterror) {
-					gbest = position;
+					gbest =  new ArrayList<Double>(position);
 					gbesterror = trainer.testWeights(position);
 				}
 			}
@@ -79,7 +79,7 @@ public class RingParticleSwarm extends ParticleSwarm {
 
 		RingParticle(List<Double> position, List<Double> velocity) {
 			super(position, velocity);
-			this.localbest = position;
+			this.localbest =  new ArrayList<Double>(position);
 			this.localbesterror = trainer.testWeights(position);
 			
 		}
@@ -88,7 +88,7 @@ public class RingParticleSwarm extends ParticleSwarm {
 	
 	private void updateLocalBest(RingParticle p) {
 		RingParticle localbest = checkNeighbours(p);
-		p.localbest = localbest.localbest;
+		p.localbest =  new ArrayList<Double>(localbest.localbest);
 		p.localbesterror = localbest.localbesterror;
 	}
 	

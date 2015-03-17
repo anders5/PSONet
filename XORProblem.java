@@ -35,9 +35,9 @@ public class XORProblem {
 		NetTrainer trainer = new NetTrainer(inputpatterns, expectedoutputs, net);
 	
 		
-		ParticleSwarm swarm = new ParticleSwarm(100, net.getNumberOfWeights(), trainer);
+		ParticleSwarm swarm = new ParticleSwarm(20, net.getNumberOfWeights(), trainer);
 		//RingParticleSwarm swarm = new RingParticleSwarm(100, net.getNumberOfWeights(), trainer);
-		swarm.setParameters(0.7,2.05,2.05);
+		swarm.setParameters(0.7289,2.05,2.05);
 		swarm.createSwarm();
 		Double error = trainer.testWeights(swarm.getgbest());
 		System.out.println(error);

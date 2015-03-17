@@ -22,6 +22,7 @@ public class DataParser {
 			while(Character.isDigit(line.charAt(x))) { x--; }
 			data.add(Double.parseDouble(line.substring(x+1,line.length())));	
 		}
+		br.close();
 		return data;
 		
 		

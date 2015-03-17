@@ -35,8 +35,8 @@ public class ORProblem {
 		NetTrainer trainer = new NetTrainer(inputpatterns, expectedoutputs, net);
 	
 		
-		ParticleSwarm swarm = new RingParticleSwarm(20, net.getNumberOfWeights(), trainer);
-//		RingParticleSwarm swarm = new RingParticleSwarm(100, net.getNumberOfWeights(), trainer);
+		ParticleSwarm swarm = new ParticleSwarm(20, net.getNumberOfWeights(), trainer);
+		//RingParticleSwarm swarm = new RingParticleSwarm(100, net.getNumberOfWeights(), trainer);
 		
 		swarm.setParameters(0.7289,2.05,2.05);
 		//swarm.setParameters(0.4,0.9,0.9);

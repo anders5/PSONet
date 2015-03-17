@@ -45,7 +45,7 @@ public class IdentityProblem {
 		System.out.println(error);
 		System.out.println(swarm.getgbest());
 		
-		int x = 250;
+		int x = 100;
 		//while(swarm.gbesterror > 0.01) {
 		while(x > 0) { 
 			

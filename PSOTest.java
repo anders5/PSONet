@@ -1,15 +1,28 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+import java.util.Random; 
 
 
-
-
-public class ParticleSwarm {
+public class PSOTest  {
+	
+	public static void main(String[] args) {
+		PSOTest test = new PSOTest(10,2);
+		test.setParameters(0.7289,2.05,2.05);
+		test.createSwarm();
+		int x = 1;
+		System.out.println("Initial gbest position: " + test.getgbest());
+		System.out.println("Initial gbest error: " + test.getgbesterror());
+		while(x < 50) {
+			test.moveSwarm();
+			System.out.println("gbest position after iteration: " + x + " " + test.getgbest());
+			System.out.println("gbest error after iteration: " + x + " " + test.getgbesterror());
+			x++;
+			
+	}
+	}
 	
 	protected int dimensions;
 	protected double vmax = 0.4;
-	protected NetTrainer trainer;
 	protected int numparticles;
 	protected List<Particle> swarm;
 	protected List<Double> gbest;
@@ -19,14 +32,8 @@ public class ParticleSwarm {
 	protected double vp;
 	protected double vg;
 	
-	public ParticleSwarm(int numparticles, int dimensions, NetTrainer trainer) {
-		this.numparticles = numparticles;
-		this.dimensions = dimensions;
-		swarm = new ArrayList<Particle>();
-		this.trainer = trainer;
-	}
 	
-	public ParticleSwarm(int numparticles, int dimensions) {
+	public PSOTest(int numparticles, int dimensions) {
 		this.numparticles = numparticles;
 		this.dimensions = dimensions;
 		swarm = new ArrayList<Particle>();
@@ -61,7 +68,7 @@ public class ParticleSwarm {
 //					position.add(p);
 //				}
 				
-				Double p = (rand.nextDouble() * 0.2) - 0.1;
+				Double p = (rand.nextDouble() * 0.2) - 1.0;
 				position.add(p);
 				double v = (rand.nextDouble() * 8.0) - 4.0;
 				velocity.add(v);
@@ -72,17 +79,23 @@ public class ParticleSwarm {
 			if(i == 0) {
 				gbest = new ArrayList<Double>(position);
 				
-				gbesterror = trainer.testWeights(position);
+				gbesterror = testSolution(position);
 			}
 			else {
-				if(trainer.testWeights(position) < gbesterror) {
+				if(testSolution(position) < gbesterror) {
 					gbest = new ArrayList<Double>(position);
-					gbesterror = trainer.testWeights(position);
+					gbesterror = testSolution(position);
 				}
 			}
 	}}
 	
 	
+	private double testSolution(List<Double> position) {
+		double result = Math.pow(position.get(0),2) + Math.pow(position.get(1),2);
+		return result;
+	}
+
+
 	protected class Particle {
 		List<Double> pbest,velocity,position;
 		Double pbesterror;
@@ -91,7 +104,7 @@ public class ParticleSwarm {
 			this.position = new ArrayList<Double>(position);
 			this.velocity = new ArrayList<Double>(velocity);
 			this.pbest = new ArrayList<Double>(position);
-			pbesterror = trainer.testWeights(position);
+			pbesterror = testSolution(position);
 		}
 		
 		Particle() {
@@ -113,13 +126,12 @@ public class ParticleSwarm {
 		
 	}
 	
-	public List<Double> moveSwarm(NeuralNetwork net) {	
+	public List<Double> moveSwarm() {	
 		for(Particle p : swarm) {
-			
+			double rp = rand.nextDouble();
+			double rg = rand.nextDouble();
 			List<Double> newvelocity = new ArrayList<Double>();
 			for(int i = 0; i < p.position.size(); i++) {
-				double rp = rand.nextDouble();
-				double rg = rand.nextDouble();
 				//double newv = (vw * p.velocity.get(i)) + (vp * rp * (p.pbest.get(i) - p.position.get(i)) ) + (vg * rg * (gbest.get(i) - p.position.get(i))); //particle velocity update rule
 
 				//double newv = ((rand.nextDouble() * 2.0 - 1.0) * 0.5) +  (vw * p.velocity.get(i)) + (vp * rp * (p.pbest.get(i) - p.position.get(i)) ) + (vg * rg * (gbest.get(i) - p.position.get(i))); //particle velocity update rule
@@ -131,7 +143,7 @@ public class ParticleSwarm {
 			p.updateVelocity(newvelocity);
 			
 			p.updatePosition();
-			checkNewSolution(net,p);
+			checkNewSolution(p);
 			
 		}
 //		for(Particle p : swarm) {
@@ -146,8 +158,8 @@ public class ParticleSwarm {
 		return gbest;
 	}
  
-	protected void checkNewSolution(NeuralNetwork net, Particle p) {
-			Double solutionerror = trainer.testWeights(p.position);
+	protected void checkNewSolution(Particle p) {
+			Double solutionerror = testSolution(p.position);
 			if(solutionerror < p.pbesterror) {
 				p.pbest = new ArrayList<Double>(p.position);
 				p.pbesterror = solutionerror;
@@ -158,4 +170,7 @@ public class ParticleSwarm {
 			}
 		}
 		}
+
+	
+
 

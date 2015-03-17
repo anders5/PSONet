@@ -7,9 +7,9 @@ import java.util.List;
 public class TraderParticleSwarm extends ParticleSwarm {
 	private List<TraderParticle> swarm;
 	private int time;
-	private int windowsize = 3;
+	private int windowsize = 3; //change to 8 
 	private double profit = 0;
-	private double transactionfee = 0.01, fitnessweight = 0.9;
+	private double transactionfee = 0.0001, fitnessweight = 1.0;
 	public double gbestfitness;
 	protected double gbestaction;
 	protected TraderParticle gbestparticle;
@@ -79,7 +79,7 @@ public class TraderParticleSwarm extends ParticleSwarm {
 			List<Double> position = new ArrayList<Double>();
 			List<Double> velocity = new ArrayList<Double>();
 			for(int j = 0; j < dimensions; j++) {
-				Double p = (rand.nextDouble() * 20.0) - 10.0;
+				Double p = (rand.nextDouble() * 0.2) - 0.1;
 				position.add(p);
 				double v = (rand.nextDouble() * 8) - 4;
 				velocity.add(v);
@@ -89,14 +89,14 @@ public class TraderParticleSwarm extends ParticleSwarm {
 		
 		swarm.add(p);
 		
-		gbest = swarm.get(0).position;
+		gbest = new ArrayList<Double>(swarm.get(0).position);
 		gbestparticle = swarm.get(0);
 		gbestfitness = swarm.get(0).fitness;
 		gbestaction = swarm.get(0).tradingaction;
 		
 		
 		calculateFitness(p);
-		p.pbest = position;
+		p.pbest = new ArrayList<Double>(position);
 		p.pbfitness = p.fitness;
 		//System.out.println(position);
 		
@@ -108,11 +108,13 @@ public class TraderParticleSwarm extends ParticleSwarm {
 	
 	public TraderParticle moveTraderSwarm(NeuralNetwork net) {	
 		for(TraderParticle p : swarm) {
-			double rp = rand.nextDouble();
-			double rg = rand.nextDouble();
+			
 			List<Double> newvelocity = new ArrayList<Double>();
 			for(int i = 0; i < p.position.size(); i++) {
+				double rp = rand.nextDouble();
+				double rg = rand.nextDouble();
 				double newv = vw * (1.0 * p.velocity.get(i)) + (vp * rp * (p.pbest.get(i) - p.position.get(i)) ) + (vg * rg * (gbest.get(i) - p.position.get(i))); //particle velocity update rule
+				//double newv = vw * (1.0 * p.velocity.get(i))  + (vg * rg * (gbest.get(i) - p.position.get(i))); //particle velocity update rule (no pbest)
 
 				//double newv = ((rand.nextDouble() * 2.0 - 1.0) * 0.5) +  (vw * p.velocity.get(i)) + (vp * rp * (p.pbest.get(i) - p.position.get(i)) ) + (vg * rg * (gbest.get(i) - p.position.get(i))); //particle velocity update rule
 				//double newv = 0.73 *  (vw * p.velocity.get(i)) + (vp * rp * (p.pbest.get(i) - p.position.get(i)) ) + (vg * rg * (gbest.get(i) - p.position.get(i))); //particle velocity update rule
@@ -134,8 +136,10 @@ public class TraderParticleSwarm extends ParticleSwarm {
 	
 	protected void checkNewSolution(TraderParticle p) {
 		calculateFitness(p);
-		if(p.fitness > p.pbfitness) {p.pbfitness = p.fitness; p.pbest = p.position;}
-		
+		if(p.fitness > p.pbfitness) {
+			p.pbfitness = p.fitness; 
+			p.pbest = new ArrayList<Double>(p.position);
+			}
 	}
 
 	
@@ -143,7 +147,7 @@ public class TraderParticleSwarm extends ParticleSwarm {
 		
 		for(TraderParticle p : swarm) {
 			if(p.fitness > gbestfitness) {
-				gbest = p.position;
+				gbest = new ArrayList<Double>(p.position);
 				gbestparticle = p;
 				gbestfitness = p.fitness;
 				gbestaction = p.tradingaction;

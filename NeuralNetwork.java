@@ -135,9 +135,9 @@ public class NeuralNetwork {
 	 
 	
 	private Double activateNeuron(double weightedsuminput) {
-		return (1/(1 + Math.pow(Math.E,(-1*weightedsuminput)))); //sigmoid activation function
+		//return (1/(1 + Math.pow(Math.E,(-1.0 * weightedsuminput)))); //sigmoid activation function
 		//System.out.println(weightedsuminput);
-		//return Math.tanh(weightedsuminput);
+		return Math.tanh(weightedsuminput);
 	}
 
 

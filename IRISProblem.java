@@ -24,13 +24,13 @@ public class IRISProblem {
 		NetTrainer validationset = new NetTrainer(validationdata.get(0), validationdata.get(1), net);
 		NetTrainer testset = new NetTrainer(testdata.get(0), testdata.get(1), net);
 		
-		/*ParticleSwarm swarm = new ParticleSwarm(100, net.getNumberOfWeights(), trainingset);
+		ParticleSwarm swarm = new ParticleSwarm(100, net.getNumberOfWeights(), trainingset);
 		swarm.createSwarm();
-		swarm.setParameters(0.7,2.05,2.05); */
+		swarm.setParameters(0.7,2.05,2.05); 
 		
-		RingParticleSwarm swarm = new RingParticleSwarm(100, net.getNumberOfWeights(), trainingset);
+		/*RingParticleSwarm swarm = new RingParticleSwarm(100, net.getNumberOfWeights(), trainingset);
 		swarm.createSwarm();
-		swarm.setParameters(0.7,2.05,2.05);
+		swarm.setParameters(0.7,2.05,2.05);*/
 		
 		double gbestonvalerror = validationset.testWeights(swarm.getgbest());
 		List<Double> gbestonval = swarm.getgbest();
